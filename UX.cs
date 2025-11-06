@@ -1,18 +1,17 @@
 ﻿using static System.Console ;
 
-namespace SapiensBank;
-
-public class Screen
+public class UX
 {
     private readonly Banco _banco;
-    private readonly string _titulo = " Sapiens Bank";
+    private readonly string _titulo;
 
-    public Screen(Banco banco)
+    public UX(string titulo, Banco banco)
     {
+        _titulo = titulo;
         _banco = banco;
     }
 
-    public void MenuPrincipal()
+    public void Executar()
     {
         CriarTitulo(_titulo);
         WriteLine(" [1] Criar Conta");
@@ -29,17 +28,17 @@ public class Screen
         ForegroundColor = ConsoleColor.White;
         switch (opcao)
         {
-            case "1": MenuCriarConta(); break;
+            case "1": CriarConta(); break;
             case "2": MenuListarContas(); break;
         }
         if (opcao != "9")
         {
-            MenuPrincipal();
+            Executar();
         }
         _banco.SaveContas();
     }
 
-    public void MenuCriarConta()
+    private void CriarConta()
     {
         CriarTitulo(_titulo + " - Criar Conta");
         Write(" Numero:  ");
@@ -56,15 +55,10 @@ public class Screen
         var conta = new Conta(numero, cliente, cpf, senha, limite);
         _banco.Contas.Add(conta);
 
-        CriarLinha();
-        ForegroundColor = ConsoleColor.Green;
-        Write(" Conta criada com sucesso! \n [ENTER] para continuar");
-        ForegroundColor = ConsoleColor.White;
-        ReadLine();
-        MenuPrincipal();
+        CriarRodape("Conta criada com sucesso!");
     }
 
-    public void MenuListarContas()
+    private void MenuListarContas()
     {
         CriarTitulo(_titulo + " - Listar Contas");
         foreach (var conta in _banco.Contas)
@@ -73,45 +67,34 @@ public class Screen
             WriteLine($" Saldo: {conta.Saldo:C} | Limite: {conta.Limite:C}");
             WriteLine($" Saldo Disponível: {conta.SaldoDisponível:C}\n");
         }
-
-        CriarLinha();
-        ForegroundColor = ConsoleColor.Green;
-        Write(" [ENTER] para continuar");
-        ForegroundColor = ConsoleColor.White;
-        ReadLine();
-        MenuPrincipal();
+        CriarRodape();
     }
 
-    public string CriarMenu(string titulo)
-    {
-        CriarTitulo(titulo);
-        WriteLine(" [1] Criar Conta");
-        WriteLine(" [2] Listar Contas");
-        WriteLine(" [3] Efetuar Saque");
-        WriteLine(" [4] Efetuar Depósito");
-        WriteLine("\n [9] Sair");
-        CriarLinha();
-        Write(" Digite a opção desejada: ");
-        return ReadLine() ?? "";
-    }
-
-    public void CriarLinha()
+    private void CriarLinha()
     {
         WriteLine("-------------------------------------------------");
     }
 
-    public void CriarTitulo(string titulo)
+    private void CriarTitulo(string titulo)
     {
         Clear();
         ForegroundColor = ConsoleColor.White;
         CriarLinha();
         ForegroundColor = ConsoleColor.Yellow;
-        WriteLine(titulo);
+        WriteLine(" " + titulo);
         ForegroundColor = ConsoleColor.White;
         CriarLinha();
-
     }
 
-    
+    private void CriarRodape(string? mensagem = null)
+    {
+        CriarLinha();
+        ForegroundColor = ConsoleColor.Green;
+        if (mensagem != null)
+            WriteLine(" " + mensagem);
+        Write(" ENTER para continuar");
+        ForegroundColor = ConsoleColor.White;
+        ReadLine();
+    }
 
 }

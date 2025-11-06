@@ -1,7 +1,5 @@
 ﻿using System.Text.Json;
 
-namespace SapiensBank;
-
 public class Banco
 {
     public List<Conta> Contas { get; set; } = new List<Conta>();

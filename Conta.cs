@@ -1,7 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SapiensBank;
-
 public class Conta
 {
     public int Numero { get; set; }

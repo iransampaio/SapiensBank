@@ -1,5 +1,3 @@
-﻿using SapiensBank;
-
-var banco = new Banco();
-var screen = new Screen(banco);
-screen.MenuPrincipal();
+﻿var banco = new Banco();
+var ux = new UX("Sapiens Bank", banco);
+ux.Executar();
